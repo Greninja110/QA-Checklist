@@ -1,0 +1,223 @@
+[
+  {
+    "id": 1,
+    "title": "Understand the website (Recon)",
+    "items": [
+      {"id": 1, "text": "Website purpose & target users", "checked": false},
+      {"id": 2, "text": "User roles (guest / user / admin)", "checked": false},
+      {"id": 3, "text": "Tech stack (PHP, Laravel, Node, React, etc.)", "checked": false},
+      {"id": 4, "text": "Static vs dynamic pages", "checked": false},
+      {"id": 5, "text": "Auth-based vs public features", "checked": false}
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Entry-point & access control testing",
+    "items": [
+      {"id": 1, "text": "Login / Signup / Register flows", "checked": false},
+      {"id": 2, "text": "Password rules & validation", "checked": false},
+      {"id": 3, "text": "Forgot password & reset flow", "checked": false},
+      {"id": 4, "text": "Session handling (logout works or not)", "checked": false},
+      {"id": 5, "text": "Direct access to: /dashboard, /admin, /profile", "checked": false},
+      {"id": 6, "text": "URL access without login (IDOR check)", "checked": false}
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Input validation & form testing",
+    "items": [
+      {"id": 1, "text": "Required field validation", "checked": false},
+      {"id": 2, "text": "Email / phone validation", "checked": false},
+      {"id": 3, "text": "Client-side vs server-side validation", "checked": false},
+      {"id": 4, "text": "Boundary values (min/max length)", "checked": false},
+      {"id": 5, "text": "Special characters & emojis", "checked": false},
+      {"id": 6, "text": "File upload validation (type/size)", "checked": false}
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Security basics (non-intrusive)",
+    "items": [
+      {"id": 1, "text": "Password masking", "checked": false},
+      {"id": 2, "text": "HTTPS enforced", "checked": false},
+      {"id": 3, "text": "Cookies: HttpOnly, Secure", "checked": false},
+      {"id": 4, "text": "CSRF token present", "checked": false},
+      {"id": 5, "text": "Rate limiting on login", "checked": false},
+      {"id": 6, "text": "CAPTCHA (if applicable)", "checked": false}
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Web console & client-side issues",
+    "items": [
+      {"id": 1, "text": "Browser console errors", "checked": false},
+      {"id": 2, "text": "Warnings (JS, CORS, deprecated APIs)", "checked": false},
+      {"id": 3, "text": "Network tab: failed requests, repeated calls", "checked": false},
+      {"id": 4, "text": "Exposed tokens / secrets in JS", "checked": false}
+    ]
+  },
+  {
+    "id": 6,
+    "title": "API testing (very important)",
+    "items": [
+      {"id": 1, "text": "API endpoints list", "checked": false},
+      {"id": 2, "text": "Auth required or not", "checked": false},
+      {"id": 3, "text": "Direct API access without login", "checked": false},
+      {"id": 4, "text": "Method checks (GET vs POST vs PUT)", "checked": false},
+      {"id": 5, "text": "Error handling (proper status codes)", "checked": false},
+      {"id": 6, "text": "Sensitive data exposure in response", "checked": false}
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Publicly accessible sensitive URLs",
+    "items": [
+      {"id": 1, "text": "Config files (/composer.json, /.env, /phpunit.xml)", "checked": false},
+      {"id": 2, "text": "Backup files", "checked": false},
+      {"id": 3, "text": "Logs", "checked": false},
+      {"id": 4, "text": "Dev/test endpoints", "checked": false},
+      {"id": 5, "text": "Admin panels", "checked": false},
+      {"id": 6, "text": "Cloud metadata endpoints (if any)", "checked": false},
+      {"id": 7, "text": "Check: /.git, /cpanel", "checked": false}
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Authentication & authorization logic",
+    "items": [
+      {"id": 1, "text": "Role-based access", "checked": false},
+      {"id": 2, "text": "Horizontal privilege escalation", "checked": false},
+      {"id": 3, "text": "Vertical privilege escalation", "checked": false},
+      {"id": 4, "text": "User A accessing User B data", "checked": false},
+      {"id": 5, "text": "Admin-only actions enforced or not", "checked": false}
+    ]
+  },
+  {
+    "id": 9,
+    "title": "UI / UX testing",
+    "items": [
+      {"id": 1, "text": "Alignment issues", "checked": false},
+      {"id": 2, "text": "Responsiveness (mobile / tablet / desktop)", "checked": false},
+      {"id": 3, "text": "Font consistency", "checked": false},
+      {"id": 4, "text": "Button states (hover / disabled)", "checked": false},
+      {"id": 5, "text": "Broken layouts on zoom", "checked": false},
+      {"id": 6, "text": "Dark mode (if exists)", "checked": false}
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Functional testing (core business logic)",
+    "items": [
+      {"id": 1, "text": "Happy-path testing", "checked": false},
+      {"id": 2, "text": "Negative testing", "checked": false},
+      {"id": 3, "text": "Edge cases", "checked": false},
+      {"id": 4, "text": "Multi-step flows", "checked": false},
+      {"id": 5, "text": "Data persistence after refresh", "checked": false},
+      {"id": 6, "text": "Duplicate submission handling", "checked": false}
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Navigation & link testing",
+    "items": [
+      {"id": 1, "text": "Broken internal links", "checked": false},
+      {"id": 2, "text": "External links", "checked": false},
+      {"id": 3, "text": "Incorrect redirects", "checked": false},
+      {"id": 4, "text": "404 page handling", "checked": false},
+      {"id": 5, "text": "Breadcrumbs (if present)", "checked": false}
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Error handling & messages",
+    "items": [
+      {"id": 1, "text": "Friendly error messages", "checked": false},
+      {"id": 2, "text": "No stack traces", "checked": false},
+      {"id": 3, "text": "No internal paths leaked", "checked": false},
+      {"id": 4, "text": "Correct HTTP status codes", "checked": false},
+      {"id": 5, "text": "Custom 404 / 500 pages", "checked": false}
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Performance & stability (basic)",
+    "items": [
+      {"id": 1, "text": "Page load time", "checked": false},
+      {"id": 2, "text": "Heavy API calls", "checked": false},
+      {"id": 3, "text": "Image optimization", "checked": false},
+      {"id": 4, "text": "Infinite loaders", "checked": false},
+      {"id": 5, "text": "Memory leaks (SPA apps)", "checked": false}
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Cross-browser & device testing",
+    "items": [
+      {"id": 1, "text": "Chrome / Firefox / Edge", "checked": false},
+      {"id": 2, "text": "Mobile browsers", "checked": false},
+      {"id": 3, "text": "Different resolutions", "checked": false},
+      {"id": 4, "text": "Touch interactions", "checked": false}
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Accessibility (often skipped, important)",
+    "items": [
+      {"id": 1, "text": "Keyboard navigation", "checked": false},
+      {"id": 2, "text": "Alt text for images", "checked": false},
+      {"id": 3, "text": "Proper labels", "checked": false},
+      {"id": 4, "text": "Color contrast", "checked": false},
+      {"id": 5, "text": "Screen reader basics", "checked": false}
+    ]
+  },
+  {
+    "id": 16,
+    "title": "SEO & meta checks (basic QA)",
+    "items": [
+      {"id": 1, "text": "Title & meta description", "checked": false},
+      {"id": 2, "text": "Duplicate titles", "checked": false},
+      {"id": 3, "text": "OpenGraph tags", "checked": false},
+      {"id": 4, "text": "Robots.txt accessible", "checked": false},
+      {"id": 5, "text": "Sitemap.xml present", "checked": false}
+    ]
+  },
+  {
+    "id": 17,
+    "title": "Logging & monitoring (QA view)",
+    "items": [
+      {"id": 1, "text": "Actions logged or not", "checked": false},
+      {"id": 2, "text": "Error logs generated correctly", "checked": false},
+      {"id": 3, "text": "No sensitive data in logs", "checked": false}
+    ]
+  },
+  {
+    "id": 18,
+    "title": "Deployment & environment checks",
+    "items": [
+      {"id": 1, "text": "Debug mode OFF", "checked": false},
+      {"id": 2, "text": "Test data not in prod", "checked": false},
+      {"id": 3, "text": "Dev tools disabled", "checked": false},
+      {"id": 4, "text": "Correct environment configs", "checked": false}
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Regression testing",
+    "items": [
+      {"id": 1, "text": "Old bugs fixed or not", "checked": false},
+      {"id": 2, "text": "New changes breaking old features", "checked": false},
+      {"id": 3, "text": "Side effects of fixes", "checked": false}
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Final reporting",
+    "items": [
+      {"id": 1, "text": "Clear reproduction steps", "checked": false},
+      {"id": 2, "text": "Expected vs actual result", "checked": false},
+      {"id": 3, "text": "Screenshots / logs", "checked": false},
+      {"id": 4, "text": "Severity (Low / Medium / High)", "checked": false},
+      {"id": 5, "text": "Security vs Functional classification", "checked": false}
+    ]
+  }
+]

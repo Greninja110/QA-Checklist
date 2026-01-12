@@ -1,0 +1,4 @@
+.venv/
+data/
+activate.bat
+fix_data_files.py

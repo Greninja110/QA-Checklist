@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Testing Checklist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div>
+                    <h1>QA Testing Checklist</h1>
+                    <p class="tagline"><strong>QA = Functionality + Security + UX + Stability — not just "does it work".</strong></p>
+                </div>
+                <button id="theme-toggle" class="theme-toggle" title="Toggle Dark/Light Mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link active">Checklist</a>
+                <a href="/history" class="nav-link">History</a>
+            </nav>
+        </header>
+
+        <!-- Session Info -->
+        <div class="session-info">
+            <div class="info-group">
+                <label for="target-website">Target Website:</label>
+                <input 
+                    type="text" 
+                    id="target-website" 
+                    placeholder="Enter website URL or name"
+                    class="input-field"
+                >
+            </div>
+            <div class="info-group">
+                <label for="start-date">Start Date:</label>
+                <input 
+                    type="date" 
+                    id="start-date" 
+                    class="input-field"
+                >
+            </div>
+            <button id="save-session-info" class="btn btn-primary">Save Info</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Checklist Section -->
+            <section class="checklist-section">
+                <div class="section-header">
+                    <h2>Testing Checklist</h2>
+                    <button id="add-heading-btn" class="btn btn-secondary">+ Add Heading</button>
+                </div>
+
+                <div id="checklist-container" class="checklist-container">
+                    <!-- Checklist will be dynamically loaded here -->
+                </div>
+            </section>
+
+            <!-- Notes Section -->
+            <section class="notes-section">
+                <div class="section-header">
+                    <h2>Notes</h2>
+                    <button id="add-note-btn" class="btn btn-secondary">+ Add Note</button>
+                </div>
+
+                <div id="notes-container" class="notes-container">
+                    <!-- Notes will be dynamically loaded here -->
+                </div>
+            </section>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button id="complete-btn" class="btn btn-success">Complete Testing</button>
+            <button id="reset-btn" class="btn btn-danger">Reset Session</button>
+        </div>
+    </div>
+
+    <!-- Add Heading Modal -->
+    <div id="heading-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="heading-modal-title">Add Heading</h3>
+            <input 
+                type="text" 
+                id="heading-input" 
+                placeholder="Enter heading title"
+                class="input-field"
+            >
+            <div class="modal-buttons">
+                <button id="save-heading-btn" class="btn btn-primary">Save</button>
+                <button id="cancel-heading-btn" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div id="item-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="item-modal-title">Add Sub-item</h3>
+            <input 
+                type="text" 
+                id="item-input" 
+                placeholder="Enter item text"
+                class="input-field"
+            >
+            <div class="modal-buttons">
+                <button id="save-item-btn" class="btn btn-primary">Save</button>
+                <button id="cancel-item-btn" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Note Modal -->
+    <div id="note-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="note-modal-title">Add Note</h3>
+            <textarea 
+                id="note-input" 
+                placeholder="Enter your note"
+                class="textarea-field"
+                rows="4"
+            ></textarea>
+            <div class="modal-buttons">
+                <button id="save-note-btn" class="btn btn-primary">Save</button>
+                <button id="cancel-note-btn" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

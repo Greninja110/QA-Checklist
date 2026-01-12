@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing History - QA Checklist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div>
+                    <h1>Testing History</h1>
+                    <p class="tagline">View all completed QA testing projects</p>
+                </div>
+                <button id="theme-toggle" class="theme-toggle" title="Toggle Dark/Light Mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link">Checklist</a>
+                <a href="/history" class="nav-link active">History</a>
+            </nav>
+        </header>
+
+        <!-- History Table -->
+        <div class="history-container">
+            <div class="table-wrapper">
+                <table class="history-table" id="history-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Target Website</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Completed At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody">
+                        <!-- Table rows will be dynamically loaded here -->
+                    </tbody>
+                </table>
+                <div id="no-history" class="no-data" style="display: none;">
+                    <p>No completed projects yet.</p>
+                    <a href="/" class="btn btn-primary">Start Testing</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Details Modal -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="details-modal-title">Project Details</h3>
+                <button id="close-details-btn" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body" id="details-modal-body">
+                <!-- Details will be dynamically loaded here -->
+            </div>
+            <div class="modal-buttons">
+                <button id="close-details-modal-btn" class="btn btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variable to store current project details
+        let currentProjectDetails = null;
+
+        // Theme Management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const themeIcon = document.querySelector('.theme-icon');
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+            }
+        }
+
+        // Load history on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            loadHistory();
+            
+            // Theme toggle event listener
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
+        });
+
+        async function loadHistory() {
+            try {
+                const response = await fetch('/api/history');
+                const data = await response.json();
+
+                const tbody = document.getElementById('history-tbody');
+                const noHistory = document.getElementById('no-history');
+
+                if (data.length === 0) {
+                    document.querySelector('.table-wrapper table').style.display = 'none';
+                    noHistory.style.display = 'block';
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                data.reverse().forEach((project, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${data.length - index}</td>
+                        <td class="website-cell">${escapeHtml(project.target_website)}</td>
+                        <td>${project.start_date || 'N/A'}</td>
+                        <td>${project.end_date || 'N/A'}</td>
+                        <td>${formatDateTime(project.completed_at)}</td>
+                        <td class="action-cell">
+                            <button class="btn-icon btn-view" onclick="viewDetails(${project.id})" title="View Details">
+                                👁️
+                            </button>
+                            <button class="btn-icon btn-delete" onclick="deleteProject(${project.id})" title="Delete">
+                                🗑️
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading history:', error);
+                alert('Failed to load history. Please try again.');
+            }
+        }
+
+        async function viewDetails(projectId) {
+            try {
+                const response = await fetch('/api/history');
+                const data = await response.json();
+                const project = data.find(p => p.id === projectId);
+
+                if (!project) {
+                    alert('Project not found.');
+                    return;
+                }
+
+                currentProjectDetails = project;
+
+                // Calculate statistics
+                let totalItems = 0;
+                let checkedItems = 0;
+                project.checklist.forEach(heading => {
+                    totalItems += heading.items.length;
+                    checkedItems += heading.items.filter(item => item.checked).length;
+                });
+                const completionPercentage = totalItems > 0 ? ((checkedItems / totalItems) * 100).toFixed(1) : 0;
+
+                // Build modal content
+                const modalBody = document.getElementById('details-modal-body');
+                modalBody.innerHTML = `
+                    <div class="project-info">
+                        <div class="info-row">
+                            <strong>Target Website:</strong> ${escapeHtml(project.target_website)}
+                        </div>
+                        <div class="info-row">
+                            <strong>Start Date:</strong> ${project.start_date || 'N/A'}
+                        </div>
+                        <div class="info-row">
+                            <strong>End Date:</strong> ${project.end_date || 'N/A'}
+                        </div>
+                        <div class="info-row">
+                            <strong>Completion:</strong> ${checkedItems}/${totalItems} items (${completionPercentage}%)
+                        </div>
+                    </div>
+
+                    <div class="details-section">
+                        <h4>Checklist Items</h4>
+                        ${project.checklist.map(heading => `
+                            <div class="details-heading">
+                                <h5>${escapeHtml(heading.title)}</h5>
+                                <ul class="details-items">
+                                    ${heading.items.map(item => `
+                                        <li class="${item.checked ? 'checked' : ''}">
+                                            <span class="checkbox">${item.checked ? '✓' : '○'}</span>
+                                            ${escapeHtml(item.text)}
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    ${project.notes && project.notes.length > 0 ? `
+                        <div class="details-section">
+                            <h4>Notes</h4>
+                            <ul class="details-notes">
+                                ${project.notes.map(note => `
+                                    <li>${escapeHtml(note.text)}</li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                `;
+
+                document.getElementById('details-modal').style.display = 'flex';
+            } catch (error) {
+                console.error('Error loading project details:', error);
+                alert('Failed to load project details. Please try again.');
+            }
+        }
+
+        async function deleteProject(projectId) {
+            if (!confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/history/${projectId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('Project deleted successfully!');
+                    loadHistory();
+                } else {
+                    alert('Failed to delete project. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error deleting project:', error);
+                alert('Failed to delete project. Please try again.');
+            }
+        }
+
+        function formatDateTime(dateTimeStr) {
+            if (!dateTimeStr) return 'N/A';
+            const date = new Date(dateTimeStr);
+            return date.toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Modal controls
+        document.getElementById('close-details-btn').addEventListener('click', () => {
+            document.getElementById('details-modal').style.display = 'none';
+        });
+
+        document.getElementById('close-details-modal-btn').addEventListener('click', () => {
+            document.getElementById('details-modal').style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('details-modal');
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
