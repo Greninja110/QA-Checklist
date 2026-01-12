@@ -50,12 +50,12 @@ body {
     background-color: var(--bg-color);
     color: var(--text-primary);
     line-height: 1.6;
-    padding: 20px;
+    padding: 20px 10px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -67,6 +67,10 @@ body {
     box-shadow: 0 2px 8px var(--shadow-sm);
     margin-bottom: 30px;
     transition: background-color 0.3s ease;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
 }
 
 .header-top {
@@ -162,6 +166,10 @@ body {
     gap: 20px;
     align-items: flex-end;
     flex-wrap: wrap;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
 }
 
 .info-group {
@@ -194,15 +202,51 @@ body {
 
 /* Main Content */
 .main-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
+    display: flex;
+    gap: 25px;
     margin-bottom: 30px;
+    justify-content: center;
+    align-items: flex-start;
 }
 
-@media (max-width: 1024px) {
+/* Notes Section - Left */
+.notes-section {
+    margin-top: -435px;
+    width: 400px;
+    flex-shrink: 0;
+    height: 600px;
+    top: 0;
+    position: sticky;
+}
+
+/* Checklist Section - Center */
+.checklist-section {
+    width: 1000px;
+    flex-shrink: 0;
+}
+
+/* Bugs Section - Right */
+.bugs-section {
+    margin-top: -435px;
+    width: 400px;
+    flex-shrink: 0;
+    height: 600px;
+    top: 0;
+    position: sticky;
+
+}
+
+@media (max-width: 1850px) {
     .main-content {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .notes-section,
+    .checklist-section,
+    .bugs-section {
+        width: 100%;
+        max-width: 1000px;
     }
 }
 
@@ -219,36 +263,22 @@ body {
     font-size: 24px;
 }
 
-/* Checklist Section */
-.checklist-section {
+/* All sections - consistent styling */
+.notes-section,
+.checklist-section,
+.bugs-section {
     background: var(--card-bg);
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 2px 8px var(--shadow-sm);
 }
 
+/* Checklist Section */
+.checklist-section {
+}
+
 .checklist-container {
-    max-height: 600px;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-.checklist-container::-webkit-scrollbar {
-    width: 8px;
-}
-
-.checklist-container::-webkit-scrollbar-track {
-    background: var(--content-bg);
-    border-radius: 4px;
-}
-
-.checklist-container::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 4px;
-}
-
-.checklist-container::-webkit-scrollbar-thumb:hover {
-    background: var(--text-secondary);
+    /* Remove internal scroll - let page scroll naturally */
 }
 
 /* Checklist Heading */
@@ -339,15 +369,10 @@ body {
 
 /* Notes Section */
 .notes-section {
-    background: var(--card-bg);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px var(--shadow-sm);
 }
 
 .notes-container {
-    max-height: 600px;
-    overflow-y: auto;
+    /* Remove max-height for natural scrolling */
 }
 
 .note-item {
@@ -357,12 +382,19 @@ body {
     margin-bottom: 12px;
     border-left: 4px solid var(--accent-primary);
     position: relative;
+    transition: all 0.3s ease;
+}
+
+.note-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px var(--shadow-md);
 }
 
 .note-text {
     color: var(--text-primary);
     margin-bottom: 8px;
     word-wrap: break-word;
+    font-size: 14px;
 }
 
 .note-footer {
@@ -372,13 +404,19 @@ body {
 }
 
 .note-time {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-secondary);
 }
 
 .note-actions {
     display: flex;
     gap: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.note-item:hover .note-actions {
+    opacity: 1;
 }
 
 /* Buttons */
@@ -464,6 +502,9 @@ body {
     background: var(--card-bg);
     border-radius: 12px;
     box-shadow: 0 2px 8px var(--shadow-sm);
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Modal */
@@ -730,4 +771,128 @@ body {
 
 .empty-state p {
     margin-bottom: 15px;
+}
+
+/* Bug History Section (Timeline) */
+.bugs-section {
+}
+
+.bugs-container {
+    position: relative;
+    padding-left: 30px;
+}
+
+/* Timeline vertical line */
+.bugs-container::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent-gradient);
+}
+
+.bug-item {
+    position: relative;
+    background: var(--content-bg);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.bug-item::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 20px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    border: 3px solid var(--card-bg);
+    box-shadow: 0 0 0 2px var(--accent-primary);
+    transition: all 0.3s ease;
+}
+
+.bug-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px var(--shadow-md);
+    border-color: var(--accent-primary);
+}
+
+.bug-item:hover::before {
+    transform: scale(1.3);
+}
+
+.bug-date-badge {
+    position: absolute;
+    left: -150px;
+    top: 15px;
+    background: var(--accent-gradient);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.bug-item:hover .bug-date-badge {
+    opacity: 1;
+}
+
+@media (max-width: 1400px) {
+    .bug-date-badge {
+        position: static;
+        display: inline-block;
+        margin-bottom: 8px;
+        opacity: 1;
+    }
+}
+
+.bug-title {
+    color: var(--text-title);
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bug-description {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.bug-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.bug-timestamp {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.bug-actions {
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.bug-item:hover .bug-actions {
+    opacity: 1;
 }

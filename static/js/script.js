@@ -10,6 +10,7 @@ let editingHeadingId = null;
 let editingItemId = null;
 let editingItemHeadingId = null;
 let editingNoteId = null;
+let editingBugId = null;
 
 // Initialize app on page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -56,6 +57,7 @@ function initializeEventListeners() {
     // Add buttons
     document.getElementById('add-heading-btn').addEventListener('click', () => openHeadingModal());
     document.getElementById('add-note-btn').addEventListener('click', () => openNoteModal());
+    document.getElementById('add-bug-btn').addEventListener('click', () => openBugModal());
     
     // Modal buttons - Heading
     document.getElementById('save-heading-btn').addEventListener('click', saveHeading);
@@ -68,6 +70,10 @@ function initializeEventListeners() {
     // Modal buttons - Note
     document.getElementById('save-note-btn').addEventListener('click', saveNote);
     document.getElementById('cancel-note-btn').addEventListener('click', closeNoteModal);
+    
+    // Modal buttons - Bug
+    document.getElementById('save-bug-btn').addEventListener('click', saveBug);
+    document.getElementById('cancel-bug-btn').addEventListener('click', closeBugModal);
     
     // Action buttons
     document.getElementById('complete-btn').addEventListener('click', completeSession);
@@ -105,6 +111,7 @@ async function loadSession() {
         
         renderChecklist();
         renderNotes();
+        renderBugs();
     } catch (error) {
         console.error('Error loading session:', error);
         showError('Failed to load session. Please refresh the page.');
@@ -577,3 +584,149 @@ function showError(message) {
 
 // Debug logging
 console.log('QA Testing Checklist - Script loaded successfully');
+
+// Render bugs timeline
+function renderBugs() {
+    const container = document.getElementById('bugs-container');
+    
+    if (!currentSession.bugs || currentSession.bugs.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No bugs reported yet.</p></div>';
+        return;
+    }
+    
+    container.innerHTML = currentSession.bugs.map(bug => `
+        <div class="bug-item" data-bug-id="${bug.id}">
+            <div class="bug-date-badge">${formatDate(bug.created_at)}</div>
+            <div class="bug-title">
+                <span>${escapeHtml(bug.title)}</span>
+            </div>
+            <div class="bug-description">${escapeHtml(bug.description)}</div>
+            <div class="bug-footer">
+                <span class="bug-timestamp" title="${bug.created_at}">
+                    ${formatDateTime(bug.created_at)}
+                </span>
+                <div class="bug-actions">
+                    <button class="btn-icon" onclick="openBugModal(${bug.id})" title="Edit">✏️</button>
+                    <button class="btn-icon btn-delete" onclick="deleteBug(${bug.id})" title="Delete">🗑️</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Bug Modal
+function openBugModal(bugId = null) {
+    editingBugId = bugId;
+    const modal = document.getElementById('bug-modal');
+    const titleInput = document.getElementById('bug-title-input');
+    const descInput = document.getElementById('bug-description-input');
+    const modalTitle = document.getElementById('bug-modal-title');
+    
+    if (bugId) {
+        const bug = currentSession.bugs.find(b => b.id === bugId);
+        if (bug) {
+            titleInput.value = bug.title;
+            descInput.value = bug.description;
+            modalTitle.textContent = 'Edit Bug';
+        }
+    } else {
+        titleInput.value = '';
+        descInput.value = '';
+        modalTitle.textContent = 'Add Bug';
+    }
+    
+    modal.style.display = 'flex';
+    titleInput.focus();
+}
+
+function closeBugModal() {
+    document.getElementById('bug-modal').style.display = 'none';
+    editingBugId = null;
+}
+
+async function saveBug() {
+    const titleInput = document.getElementById('bug-title-input');
+    const descInput = document.getElementById('bug-description-input');
+    const title = titleInput.value.trim();
+    const description = descInput.value.trim();
+    
+    if (!title) {
+        showError('Please enter a bug title.');
+        return;
+    }
+    
+    if (!description) {
+        showError('Please enter a bug description.');
+        return;
+    }
+    
+    try {
+        let response;
+        
+        if (editingBugId) {
+            // Edit existing bug
+            response = await fetch(`/api/bugs/${editingBugId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, description })
+            });
+        } else {
+            // Add new bug
+            response = await fetch('/api/bugs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, description })
+            });
+        }
+        
+        if (!response.ok) throw new Error('Failed to save bug');
+        
+        closeBugModal();
+        await loadSession();
+        showSuccess(editingBugId ? 'Bug updated!' : 'Bug added!');
+    } catch (error) {
+        console.error('Error saving bug:', error);
+        showError('Failed to save bug. Please try again.');
+    }
+}
+
+async function deleteBug(bugId) {
+    if (!confirm('Are you sure you want to delete this bug?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/bugs/${bugId}`, {
+            method: 'DELETE'
+        });
+        
+        if (!response.ok) throw new Error('Failed to delete bug');
+        
+        await loadSession();
+        showSuccess('Bug deleted!');
+    } catch (error) {
+        console.error('Error deleting bug:', error);
+        showError('Failed to delete bug. Please try again.');
+    }
+}
+
+// Format date for badge
+function formatDate(dateTimeStr) {
+    if (!dateTimeStr) return '';
+    const date = new Date(dateTimeStr);
+    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+}
+
+// Format date time
+function formatDateTime(dateTimeStr) {
+    if (!dateTimeStr) return '';
+    const date = new Date(dateTimeStr);
+    return date.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}

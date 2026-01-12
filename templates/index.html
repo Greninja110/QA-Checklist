@@ -8,8 +8,9 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
+        <!-- Header - Centered, narrower -->
         <header class="header">
+            
             <div class="header-top">
                 <div>
                     <h1>QA Testing Checklist</h1>
@@ -19,13 +20,14 @@
                     <span class="theme-icon">🌙</span>
                 </button>
             </div>
+            
             <nav class="nav">
                 <a href="/" class="nav-link active">Checklist</a>
                 <a href="/history" class="nav-link">History</a>
             </nav>
         </header>
 
-        <!-- Session Info -->
+        <!-- Session Info - Centered, narrower -->
         <div class="session-info">
             <div class="info-group">
                 <label for="target-website">Target Website:</label>
@@ -47,9 +49,22 @@
             <button id="save-session-info" class="btn btn-primary">Save Info</button>
         </div>
 
-        <!-- Main Content -->
+        <!-- Main Content - 3 Columns -->
         <div class="main-content">
-            <!-- Checklist Section -->
+            
+            <!-- Notes Section (Left - 300px) -->
+            <section class="notes-section">
+                <div class="section-header">
+                    <h2>Notes</h2>
+                    <button id="add-note-btn" class="btn btn-secondary">+ Add Note</button>
+                </div>
+
+                <div id="notes-container" class="notes-container">
+                    <!-- Notes will be dynamically loaded here -->
+                </div>
+            </section>
+
+            <!-- Checklist Section (Center - 800px) -->
             <section class="checklist-section">
                 <div class="section-header">
                     <h2>Testing Checklist</h2>
@@ -61,20 +76,20 @@
                 </div>
             </section>
 
-            <!-- Notes Section -->
-            <section class="notes-section">
+            <!-- Bug History Section (Right - 300px) -->
+            <section class="bugs-section">
                 <div class="section-header">
-                    <h2>Notes</h2>
-                    <button id="add-note-btn" class="btn btn-secondary">+ Add Note</button>
+                    <h2>Bugs History</h2>
+                    <button id="add-bug-btn" class="btn btn-secondary">+ Add Bug</button>
                 </div>
 
-                <div id="notes-container" class="notes-container">
-                    <!-- Notes will be dynamically loaded here -->
+                <div id="bugs-container" class="bugs-container">
+                    <!-- Bugs timeline will be dynamically loaded here -->
                 </div>
             </section>
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Action Buttons - Centered, narrower -->
         <div class="action-buttons">
             <button id="complete-btn" class="btn btn-success">Complete Testing</button>
             <button id="reset-btn" class="btn btn-danger">Reset Session</button>
@@ -128,6 +143,30 @@
             <div class="modal-buttons">
                 <button id="save-note-btn" class="btn btn-primary">Save</button>
                 <button id="cancel-note-btn" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bug Modal -->
+    <div id="bug-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="bug-modal-title">Add Bug</h3>
+            <input 
+                type="text" 
+                id="bug-title-input" 
+                placeholder="Bug title"
+                class="input-field"
+                style="margin-bottom: 10px;"
+            >
+            <textarea 
+                id="bug-description-input" 
+                placeholder="Bug description"
+                class="textarea-field"
+                rows="4"
+            ></textarea>
+            <div class="modal-buttons">
+                <button id="save-bug-btn" class="btn btn-primary">Save</button>
+                <button id="cancel-bug-btn" class="btn btn-secondary">Cancel</button>
             </div>
         </div>
     </div>

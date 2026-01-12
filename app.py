@@ -73,7 +73,8 @@ def init_data_files():
                 "target_website": "",
                 "start_date": "",
                 "checklist": DEFAULT_CHECKLIST,
-                "notes": []
+                "notes": [],
+                "bugs": []
             }
             save_json(CURRENT_SESSION_FILE, default_session)
             print(f"✓ Created/Fixed {CURRENT_SESSION_FILE}")
@@ -169,7 +170,8 @@ def get_session():
                 "target_website": "",
                 "start_date": "",
                 "checklist": DEFAULT_CHECKLIST if DEFAULT_CHECKLIST else [],
-                "notes": []
+                "notes": [],
+                "bugs": []
             }
             save_json(CURRENT_SESSION_FILE, session_data)
         
@@ -520,7 +522,8 @@ def complete_session():
             "target_website": "",
             "start_date": "",
             "checklist": load_default_checklist(),  # Reload from file
-            "notes": []
+            "notes": [],
+            "bugs": []
         }
         
         if save_json(COMPLETED_FILE, completed_data) and save_json(CURRENT_SESSION_FILE, reset_session):
@@ -540,7 +543,8 @@ def reset_session():
             "target_website": "",
             "start_date": "",
             "checklist": load_default_checklist(),  # Reload from file
-            "notes": []
+            "notes": [],
+            "bugs": []
         }
         
         if save_json(CURRENT_SESSION_FILE, reset_data):
@@ -583,6 +587,107 @@ def delete_history_entry(project_id):
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/bugs', methods=['POST'])
+def add_bug():
+    """Add new bug"""
+    try:
+        data = request.get_json()
+        title = data.get('title', '').strip()
+        description = data.get('description', '').strip()
+        
+        if not title:
+            return jsonify({"error": "Title is required"}), 400
+        
+        if not description:
+            return jsonify({"error": "Description is required"}), 400
+        
+        session_data = load_json(CURRENT_SESSION_FILE)
+        
+        if session_data is None:
+            return jsonify({"error": "Session data not found"}), 500
+        
+        # Initialize bugs array if it doesn't exist
+        if 'bugs' not in session_data:
+            session_data['bugs'] = []
+        
+        # Get max bug ID
+        max_id = max([bug['id'] for bug in session_data['bugs']], default=0)
+        
+        new_bug = {
+            "id": max_id + 1,
+            "title": title,
+            "description": description,
+            "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        
+        session_data['bugs'].append(new_bug)
+        
+        if save_json(CURRENT_SESSION_FILE, session_data):
+            return jsonify({"success": True, "bug": new_bug}), 200
+        return jsonify({"error": "Failed to save"}), 500
+    except Exception as e:
+        print(f"Error in add_bug: {str(e)}")
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/bugs/<int:bug_id>', methods=['PUT'])
+def edit_bug(bug_id):
+    """Edit bug"""
+    try:
+        data = request.get_json()
+        title = data.get('title', '').strip()
+        description = data.get('description', '').strip()
+        
+        if not title:
+            return jsonify({"error": "Title is required"}), 400
+        
+        if not description:
+            return jsonify({"error": "Description is required"}), 400
+        
+        session_data = load_json(CURRENT_SESSION_FILE)
+        
+        if session_data is None:
+            return jsonify({"error": "Session data not found"}), 500
+        
+        if 'bugs' not in session_data:
+            session_data['bugs'] = []
+        
+        for bug in session_data['bugs']:
+            if bug['id'] == bug_id:
+                bug['title'] = title
+                bug['description'] = description
+                break
+        
+        if save_json(CURRENT_SESSION_FILE, session_data):
+            return jsonify({"success": True}), 200
+        return jsonify({"error": "Failed to save"}), 500
+    except Exception as e:
+        print(f"Error in edit_bug: {str(e)}")
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/bugs/<int:bug_id>', methods=['DELETE'])
+def delete_bug(bug_id):
+    """Delete bug"""
+    try:
+        session_data = load_json(CURRENT_SESSION_FILE)
+        
+        if session_data is None:
+            return jsonify({"error": "Session data not found"}), 500
+        
+        if 'bugs' not in session_data:
+            session_data['bugs'] = []
+        
+        session_data['bugs'] = [bug for bug in session_data['bugs'] if bug['id'] != bug_id]
+        
+        if save_json(CURRENT_SESSION_FILE, session_data):
+            return jsonify({"success": True}), 200
+        return jsonify({"error": "Failed to save"}), 500
+    except Exception as e:
+        print(f"Error in delete_bug: {str(e)}")
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
 # Error handlers
 @app.errorhandler(404)
 def not_found(error):
@@ -612,8 +717,8 @@ if __name__ == '__main__':
     print("QA Testing Checklist Application")
     print("=" * 60)
     print("Starting Flask server...")
-    print("Access the application at: http://127.0.0.1:10101")
+    print("Access the application at: http://127.0.0.1:5000")
     print("Press CTRL+C to quit")
     print("=" * 60)
-
-    app.run(debug=False, host='127.0.0.1', port=10101)
+    
+    app.run(debug=True, host='127.0.0.1', port=5000)
