@@ -717,8 +717,8 @@ if __name__ == '__main__':
     print("QA Testing Checklist Application")
     print("=" * 60)
     print("Starting Flask server...")
-    print("Access the application at: http://127.0.0.1:5000")
+    print("Access the application at: http://127.0.0.1:10101")
     print("Press CTRL+C to quit")
     print("=" * 60)
     
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    app.run(debug=True, host='127.0.0.1', port=10101)

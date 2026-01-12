@@ -55,9 +55,10 @@ body {
 }
 
 .container {
-    max-width: 100%;
-    margin: 0 auto;
+    max-width: 1400px;
+    margin: auto;
 }
+
 
 /* Header */
 .header {
@@ -67,7 +68,7 @@ body {
     box-shadow: 0 2px 8px var(--shadow-sm);
     margin-bottom: 30px;
     transition: background-color 0.3s ease;
-    max-width: 1000px;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 30px;
@@ -166,7 +167,7 @@ body {
     gap: 20px;
     align-items: flex-end;
     flex-wrap: wrap;
-    max-width: 1000px;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 30px;
@@ -204,39 +205,39 @@ body {
 .main-content {
     display: flex;
     gap: 25px;
-    margin-bottom: 30px;
     justify-content: center;
     align-items: flex-start;
 }
 
+
 /* Notes Section - Left */
 .notes-section {
-    margin-top: -435px;
-    width: 400px;
+    width: 300px !important;
     flex-shrink: 0;
-    height: 600px;
-    top: 0;
+    margin-top: -435px;
+    top: 20px;
     position: sticky;
+    height: 600px;
 }
 
 /* Checklist Section - Center */
 .checklist-section {
-    width: 1000px;
+    width: 800px !important;
     flex-shrink: 0;
 }
 
 /* Bugs Section - Right */
 .bugs-section {
-    margin-top: -435px;
-    width: 400px;
+    width: 300px !important;
     flex-shrink: 0;
-    height: 600px;
-    top: 0;
+    margin-top: -435px;
+    top: 20px;
     position: sticky;
+    height: 600px;
 
 }
 
-@media (max-width: 1850px) {
+/* @media (max-width: 1850px) {
     .main-content {
         flex-direction: column;
         align-items: center;
@@ -248,7 +249,7 @@ body {
         width: 100%;
         max-width: 1000px;
     }
-}
+} */
 
 /* Section */
 .section-header {
@@ -495,6 +496,7 @@ body {
 
 /* Action Buttons */
 .action-buttons {
+    margin-top: 20px;
     display: flex;
     gap: 20px;
     justify-content: center;
@@ -502,7 +504,7 @@ body {
     background: var(--card-bg);
     border-radius: 12px;
     box-shadow: 0 2px 8px var(--shadow-sm);
-    max-width: 1000px;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -895,4 +897,18 @@ body {
 
 .bug-item:hover .bug-actions {
     opacity: 1;
+}
+
+@media (max-width: 1100px) {
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .notes-section,
+    .checklist-section,
+    .bugs-section {
+        width: 100%;
+        max-width: 800px;
+    }
 }
