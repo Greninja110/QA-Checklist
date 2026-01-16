@@ -210,15 +210,6 @@ body {
 }
 
 
-/* Notes Section - Left */
-.notes-section {
-    width: 300px !important;
-    flex-shrink: 0;
-    margin-top: -435px;
-    top: 20px;
-    position: sticky;
-    height: 600px;
-}
 
 /* Checklist Section - Center */
 .checklist-section {
@@ -226,16 +217,6 @@ body {
     flex-shrink: 0;
 }
 
-/* Bugs Section - Right */
-.bugs-section {
-    width: 300px !important;
-    flex-shrink: 0;
-    margin-top: -435px;
-    top: 20px;
-    position: sticky;
-    height: 600px;
-
-}
 
 /* @media (max-width: 1850px) {
     .main-content {
@@ -372,9 +353,7 @@ body {
 .notes-section {
 }
 
-.notes-container {
-    /* Remove max-height for natural scrolling */
-}
+
 
 .note-item {
     background: var(--content-bg);
@@ -911,4 +890,23 @@ body {
         width: 100%;
         max-width: 800px;
     }
+}
+/* Notes Section - Left (Fixed Width + Sticky) */
+.notes-section {
+    margin-top: -435px;
+    width: 300px !important;
+    flex-shrink: 0;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+}
+
+/* Bugs Section - Right (Fixed Width + Sticky) */
+.bugs-section {
+    margin-top: -435px;
+    width: 300px !important;
+    flex-shrink: 0;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
 }
