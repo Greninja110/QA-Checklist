@@ -512,7 +512,8 @@ def complete_session():
             "end_date": end_date,
             "completed_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "checklist": session_data['checklist'],
-            "notes": session_data['notes']
+            "notes": session_data['notes'],
+            "bugs": session_data.get('bugs', [])  # Add this line
         }
         
         completed_data.append(completed_entry)

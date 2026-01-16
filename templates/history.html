@@ -208,7 +208,30 @@
                             <h4>Notes</h4>
                             <ul class="details-notes">
                                 ${project.notes.map(note => `
-                                    <li>${escapeHtml(note.text)}</li>
+                                    <li>
+                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                                            <span style="font-weight: 600; color: var(--text-title);">Note</span>
+                                            <span style="font-size: 11px; color: var(--text-secondary);">${formatDateTime(note.created_at)}</span>
+                                        </div>
+                                        <div>${escapeHtml(note.text)}</div>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+
+                    ${project.bugs && project.bugs.length > 0 ? `
+                        <div class="details-section">
+                            <h4>Bugs History</h4>
+                            <ul class="details-notes">
+                                ${project.bugs.map(bug => `
+                                    <li style="border-left-color: var(--danger-color);">
+                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                                            <span style="font-weight: 600; color: var(--text-title);">${escapeHtml(bug.title)}</span>
+                                            <span style="font-size: 11px; color: var(--text-secondary);">${formatDateTime(bug.created_at)}</span>
+                                        </div>
+                                        <div style="color: var(--text-secondary); font-size: 14px;">${escapeHtml(bug.description)}</div>
+                                    </li>
                                 `).join('')}
                             </ul>
                         </div>

@@ -55,7 +55,7 @@ body {
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 800px;
     margin: auto;
 }
 
@@ -193,6 +193,8 @@ body {
     font-size: 15px;
     transition: all 0.3s ease;
     background: var(--content-bg);
+    color: var(--text-primary); /* Add this line */
+
 }
 
 .input-field:focus {
@@ -549,6 +551,7 @@ body {
     resize: vertical;
     background: var(--content-bg);
     transition: all 0.3s ease;
+    color: var(--text-primary); /* Add this line */
 }
 
 .textarea-field:focus {
@@ -896,9 +899,9 @@ body {
     margin-top: -435px;
     width: 300px !important;
     flex-shrink: 0;
-    position: sticky;
-    top: 20px;
-    align-self: flex-start;
+    /* position: sticky; */
+    /* top: 20px; */
+    /* align-self: flex-start; */
 }
 
 /* Bugs Section - Right (Fixed Width + Sticky) */
@@ -906,7 +909,32 @@ body {
     margin-top: -435px;
     width: 300px !important;
     flex-shrink: 0;
-    position: sticky;
-    top: 20px;
-    align-self: flex-start;
+    /* position: sticky; */
+    /* top: 20px; */
+    /* align-self: flex-start; */
+}
+
+/* Bug items in history modal */
+.details-notes li[style*="border-left-color: var(--danger-color)"] {
+    border-left-color: var(--danger-color) !important;
+}
+
+/* Timestamp styling in details modal */
+.details-notes li > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.details-notes li > div:first-child span:first-child {
+    font-weight: 600;
+    color: var(--text-title);
+}
+
+.details-notes li > div:first-child span:last-child {
+    font-size: 11px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    margin-left: 10px;
 }
