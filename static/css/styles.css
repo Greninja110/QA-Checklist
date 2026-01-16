@@ -256,12 +256,12 @@ body {
 }
 
 /* Checklist Section */
-.checklist-section {
-}
+/* .checklist-section { */
+/* } */
 
-.checklist-container {
+/* .checklist-container { */
     /* Remove internal scroll - let page scroll naturally */
-}
+/* } */
 
 /* Checklist Heading */
 .checklist-heading {
@@ -350,8 +350,8 @@ body {
 }
 
 /* Notes Section */
-.notes-section {
-}
+/* .notes-section { */
+/* } */
 
 
 
@@ -755,8 +755,8 @@ body {
 }
 
 /* Bug History Section (Timeline) */
-.bugs-section {
-}
+/* .bugs-section { */
+/* } */
 
 .bugs-container {
     position: relative;
